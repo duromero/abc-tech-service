@@ -21,6 +21,6 @@ public class HealthCheckController {
 
     @GetMapping("version")
     public ResponseEntity<String> version(){
-        return ResponseEntity.ok(healthCheckService.getVersion());
+        return ResponseEntity.ok(healthCheckService.getNamePlusVersion());
     }
 }
