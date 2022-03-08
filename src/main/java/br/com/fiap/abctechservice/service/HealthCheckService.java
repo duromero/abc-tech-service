@@ -12,10 +12,8 @@ public class HealthCheckService {
     public String getVersion(){
         Properties properties = new Properties();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("application.yml");
-
         try {
             properties.load(inputStream);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
