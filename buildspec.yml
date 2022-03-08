@@ -5,6 +5,8 @@ phases:
       - echo "Pré build phase - Exemplo baixar dependência se fosse necessário"
   build:
     commands:
+      - echo "Testing"
+      - mvn clean test
       - echo "Building"
       - mvn clean compile package
   post_build:
