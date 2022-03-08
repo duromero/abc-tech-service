@@ -20,4 +20,13 @@ class AbcTechServiceApplicationTests {
 		System.out.println(healthCheckService.getVersion());
 	}
 
+	@Test
+	public void getName() {
+		System.out.println(healthCheckService.getName());
+	}
+
+	@Test
+	public void getNamePlusVersion() {
+		System.out.println(healthCheckService.getNamePlusVersion());
+	}
 }
