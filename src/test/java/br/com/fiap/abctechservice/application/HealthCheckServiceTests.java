@@ -1,4 +1,4 @@
-package br.com.fiap.abctechservice.service;
+package br.com.fiap.abctechservice.application;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,20 +9,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class HealthCheckServiceTests {
 
     @Autowired
-    private HealthCheckService healthCheckService;
+    private HealthCheckComponent healthCheckComponent;
 
     @Test
     public void testingGetVersion() {
-        Assertions.assertNotNull(healthCheckService.getVersion());
+        Assertions.assertNotNull(healthCheckComponent.getVersion());
     }
 
     @Test
     public void testingGetName() {
-        Assertions.assertNotNull(healthCheckService.getName());
+        Assertions.assertNotNull(healthCheckComponent.getName());
     }
 
     @Test
     public void testingGetNamePlusVersion() {
-        Assertions.assertNotNull(healthCheckService.getNamePlusVersion());
+        Assertions.assertNotNull(healthCheckComponent.getNamePlusVersion());
     }
 }

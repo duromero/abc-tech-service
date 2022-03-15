@@ -1,13 +1,13 @@
-package br.com.fiap.abctechservice.service;
+package br.com.fiap.abctechservice.application;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Service
-public class HealthCheckService {
+@Component
+public class HealthCheckComponent {
 
     public String getVersion(){
         Properties properties = this.getArquivoProperties();

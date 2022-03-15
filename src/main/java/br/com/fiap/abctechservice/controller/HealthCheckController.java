@@ -1,6 +1,6 @@
 package br.com.fiap.abctechservice.controller;
 
-import br.com.fiap.abctechservice.service.HealthCheckService;
+import br.com.fiap.abctechservice.application.HealthCheckComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class HealthCheckController {
 
-    @Autowired
-    private HealthCheckService healthCheckService;
+    private HealthCheckComponent healthCheckComponent;
+
+    public HealthCheckController(@Autowired HealthCheckComponent healthCheckComponent){
+        this.healthCheckComponent = healthCheckComponent;
+    }
 
     @GetMapping()
     public ResponseEntity<Object> status(){
@@ -21,6 +24,6 @@ public class HealthCheckController {
 
     @GetMapping("version")
     public ResponseEntity<String> version(){
-        return ResponseEntity.ok(healthCheckService.getNamePlusVersion());
+        return ResponseEntity.ok(healthCheckComponent.getNamePlusVersion());
     }
 }
