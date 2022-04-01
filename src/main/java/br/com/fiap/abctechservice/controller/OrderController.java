@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class OrderController {
 //    }
 
     @PostMapping()
-    public ResponseEntity<Order> saveOrder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<Order> saveOrder( @Valid @RequestBody OrderDto orderDto){
         this.orderApplication.createOrder(orderDto);
         return  ResponseEntity.ok().build();
     }
