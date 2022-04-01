@@ -1,5 +1,6 @@
 package br.com.fiap.abctechservice.handler;
 
+import br.com.fiap.abctechservice.handler.exception.CustomException;
 import br.com.fiap.abctechservice.handler.exception.MaxAssistsException;
 import br.com.fiap.abctechservice.handler.exception.MinimumAssistsRequiredException;
 import org.hibernate.validator.internal.constraintvalidators.bv.money.MaxValidatorForMonetaryAmount;
@@ -13,6 +14,18 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.Date;
 @ControllerAdvice
 public class ControllerExceptionHandler {
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorMessageResponse> errorCustomException(CustomException ex){
+        ErrorMessageResponse error = new ErrorMessageResponse(
+                HttpStatus.NOT_FOUND.value(),
+                new Date(),
+                ex.getMessage(),
+                ex.getDescription()
+        );
+        return new ResponseEntity<ErrorMessageResponse>(error, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(MinimumAssistsRequiredException.class)
     public ResponseEntity<ErrorMessageResponse> errorMinAssistRequired(MinimumAssistsRequiredException ex){

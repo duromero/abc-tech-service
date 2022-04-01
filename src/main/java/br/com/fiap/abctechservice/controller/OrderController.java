@@ -29,12 +29,11 @@ public class OrderController {
 //        return  ResponseEntity.ok(list);
 //    }
 //
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Order> getOrder(@PathVariable("id") String id){
-//        System.out.println(id);
-//        Order order = this.service.getOrder(Long.parseLong(id));
-//        return  ResponseEntity.ok(order);
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDto> getOrder(@PathVariable("id") String id){
+        OrderDto order = this.orderApplication.getOrder(Long.parseLong(id));
+        return  ResponseEntity.ok(order);
+    }
 
     @PostMapping()
     public ResponseEntity<Order> saveOrder( @Valid @RequestBody OrderDto orderDto){

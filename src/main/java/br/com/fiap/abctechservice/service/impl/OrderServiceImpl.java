@@ -1,5 +1,6 @@
 package br.com.fiap.abctechservice.service.impl;
 
+import br.com.fiap.abctechservice.handler.exception.CustomException;
 import br.com.fiap.abctechservice.handler.exception.MaxAssistsException;
 import br.com.fiap.abctechservice.handler.exception.MinimumAssistsRequiredException;
 import br.com.fiap.abctechservice.model.Assistance;
@@ -40,7 +41,7 @@ public class OrderServiceImpl  implements OrderService {
         ArrayList<Assistance> assistances = new ArrayList<>();
 
         arrayAssists.forEach( i ->{
-            Assistance assistance = this.assistanceRepository.findById(i).orElseThrow();
+            Assistance assistance = this.assistanceRepository.findById(i).orElseThrow(() -> new CustomException("Produto não encontrado","ID: " + i.toString()));
             assistances.add(assistance);
         });
 

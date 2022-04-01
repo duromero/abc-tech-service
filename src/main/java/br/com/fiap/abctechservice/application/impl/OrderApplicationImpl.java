@@ -28,6 +28,26 @@ public class OrderApplicationImpl implements OrderApplication {
         this.service.saveOrder(order, orderDto.getServices());
     }
 
+    @Override
+    public OrderDto getOrder(Long id) {
+        Order order = this.service.getOrder(id);
+        OrderDto orderDto= new OrderDto();
+        orderDto.setOperatorId(order.getOperatorId());
+        orderDto.setStart(getOrderLocationDtoFromOrderLocation(order.getStartOrderLocation()));
+        orderDto.setEnd(getOrderLocationDtoFromOrderLocation(order.getEndtOrderLocation()));
+
+        return orderDto;
+    }
+
+    private OrderLocationDto getOrderLocationDtoFromOrderLocation(OrderLocation orderLocation) {
+        OrderLocationDto location = new OrderLocationDto();
+        location.setLatitude(orderLocation.getLatitude());
+        location.setLongitude(orderLocation.getLongitude());
+        location.setDateTime(orderLocation.getDate());
+
+        return location;
+    }
+
     private OrderLocation getOrderLocationFromOrderLocationDto(OrderLocationDto orderLocationDto) {
         OrderLocation location = new OrderLocation();
         location.setLatitude(orderLocationDto.getLatitude());
