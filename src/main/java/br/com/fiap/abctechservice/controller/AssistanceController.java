@@ -1,5 +1,7 @@
 package br.com.fiap.abctechservice.controller;
 
+import br.com.fiap.abctechservice.application.AssistenceApplication;
+import br.com.fiap.abctechservice.application.dto.AssistDto;
 import br.com.fiap.abctechservice.model.Assistance;
 import br.com.fiap.abctechservice.repository.AssistanceRepository;
 import br.com.fiap.abctechservice.service.impl.AssistanceServiceImpl;
@@ -15,15 +17,16 @@ import java.util.List;
 @RequestMapping("/assistance")
 public class AssistanceController {
 
-    private final AssistanceServiceImpl service;
 
-    public AssistanceController (@Autowired AssistanceServiceImpl service){
-        this.service = service;
+private final AssistenceApplication assistenceApplication;
+
+    public AssistanceController (@Autowired AssistenceApplication assistenceApplication){
+        this.assistenceApplication = assistenceApplication;
     }
 
     @GetMapping()
-    public ResponseEntity<List<Assistance>> getAssists(){
-        List<Assistance> list = this.service.getAssistList();
+    public ResponseEntity<List<AssistDto>> getAssists(){
+        List<AssistDto> list = this.assistenceApplication.getAssists();
         return  ResponseEntity.ok(list);
     }
 }
