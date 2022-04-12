@@ -1,6 +1,5 @@
 package br.com.fiap.abctechservice.service;
 
-
 import br.com.fiap.abctechservice.handler.exception.MaxAssistsException;
 import br.com.fiap.abctechservice.handler.exception.MinimumAssistsRequiredException;
 import br.com.fiap.abctechservice.model.Assistance;
@@ -8,19 +7,20 @@ import br.com.fiap.abctechservice.model.Order;
 import br.com.fiap.abctechservice.repository.AssistanceRepository;
 import br.com.fiap.abctechservice.repository.OrderRepository;
 import br.com.fiap.abctechservice.service.impl.OrderServiceImpl;
+import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class OrderServiceTest {

@@ -1,5 +1,6 @@
 package br.com.fiap.abctechservice.service;
 
+
 import br.com.fiap.abctechservice.model.Assistance;
 import br.com.fiap.abctechservice.repository.AssistanceRepository;
 import br.com.fiap.abctechservice.service.impl.AssistanceServiceImpl;
@@ -12,44 +13,41 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.mockito.Mockito.when;
-
-//import static org.Mockito.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class AssistanceServiceTest {
 
     @Mock
-    private AssistanceRepository repository;
+    private AssistanceRepository assistanceRepository;
     private AssistanceService assistanceService;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         MockitoAnnotations.openMocks(this);
-        assistanceService = new AssistanceServiceImpl(repository);
+        assistanceService = new AssistanceServiceImpl(assistanceRepository);
     }
 
     @Test
     public void test_list_success(){
-        Assistance itemAssist = new Assistance(1L,"Mock Name", "Mock Description");
-        Assistance itemAssist2 = new Assistance(2L,"Mock Name 2", "Mock Description 2");
+        Assistance itemAssist = new Assistance(1L, "Mock Name", "Mock Description");
+        Assistance itemAssist2 = new Assistance(2L, "Mock Name 2", "Mock Description 2");
 
-        when(repository.findAll()).thenReturn(List.of(itemAssist,itemAssist2));
+        when(assistanceRepository.findAll()).thenReturn(List.of(itemAssist,itemAssist2));
 
         List<Assistance> values = assistanceService.getAssistList();
 
-        Assertions.assertEquals(values.size(),2);
-        Assertions.assertSame(values.get(0),itemAssist);
-        Assertions.assertSame(values.get(1),itemAssist2);
+        Assertions.assertEquals(values.size(), 2);
+        Assertions.assertSame(values.get(0), itemAssist);
+        Assertions.assertSame(values.get(1), itemAssist2);
     }
 
     @Test
     public void test_list_empty(){
-
-        when(repository.findAll()).thenReturn(List.of());
+        when(assistanceRepository.findAll()).thenReturn(List.of());
 
         List<Assistance> values = assistanceService.getAssistList();
-        Assertions.assertEquals(values.size(),0);
 
+        Assertions.assertEquals(values.size(), 0);
     }
 }
