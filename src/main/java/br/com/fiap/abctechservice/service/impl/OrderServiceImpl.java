@@ -41,7 +41,7 @@ public class OrderServiceImpl  implements OrderService {
         ArrayList<Assistance> assistances = new ArrayList<>();
 
         arrayAssists.forEach( i ->{
-            Assistance assistance = this.assistanceRepository.findById(i).orElseThrow(() -> new CustomException("Produto não encontrado","ID: " + i.toString()));
+            Assistance assistance = this.assistanceRepository.findById(i).orElseThrow(() -> new CustomException("Produto não encontrado","ID: " + i));
             assistances.add(assistance);
         });
 
@@ -58,6 +58,9 @@ public class OrderServiceImpl  implements OrderService {
 
     @Override
     public List<Order> listOrdersByOperator(Long operatorId) {
-        return null;
+        if(operatorId == null || operatorId < 0) {
+            throw new IllegalArgumentException("O id do operador [" + operatorId + "] não é válido");
+        }
+        return repository.findAllOrderByOperatorId(operatorId);
     }
 }
