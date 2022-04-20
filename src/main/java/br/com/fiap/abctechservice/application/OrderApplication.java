@@ -1,10 +1,11 @@
 package br.com.fiap.abctechservice.application;
 
 import br.com.fiap.abctechservice.application.dto.OrderDto;
+import br.com.fiap.abctechservice.model.Order;
 
 public interface OrderApplication {
 
-    void createOrder (OrderDto orderDto);
+    Order createOrder (OrderDto orderDto);
 
     OrderDto getOrder(Long id);
 }

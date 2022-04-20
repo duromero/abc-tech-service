@@ -10,7 +10,6 @@ import br.com.fiap.abctechservice.repository.OrderRepository;
 import br.com.fiap.abctechservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +40,7 @@ public class OrderServiceImpl  implements OrderService {
     }
 
     @Override
-    public void saveOrder(Order order, List<Long> arrayAssists)  {
+    public Order saveOrder(Order order, List<Long> arrayAssists)  {
         ArrayList<Assistance> assistances = new ArrayList<>();
 
         arrayAssists.forEach( i ->{
@@ -58,7 +57,7 @@ public class OrderServiceImpl  implements OrderService {
             throw new MaxAssistsException("","");
         }
 
-        repository.save(order);
+        return repository.save(order);
     }
 
     @Override
