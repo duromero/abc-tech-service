@@ -10,6 +10,7 @@ import br.com.fiap.abctechservice.repository.OrderRepository;
 import br.com.fiap.abctechservice.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,9 @@ public class OrderServiceImpl  implements OrderService {
 
     @Override
     public Order getOrder(Long id) {
+        if(id == null || id < 1) {
+            throw new CustomException(400, "Argumento Inválido", "O id da ordem [" + id + "] não é válido");
+        }
        return this.repository.getById(id);
     }
 
@@ -41,7 +45,8 @@ public class OrderServiceImpl  implements OrderService {
         ArrayList<Assistance> assistances = new ArrayList<>();
 
         arrayAssists.forEach( i ->{
-            Assistance assistance = this.assistanceRepository.findById(i).orElseThrow(() -> new CustomException("Produto não encontrado","ID: " + i));
+            Assistance assistance = this.assistanceRepository.findById(i)
+                .orElseThrow(() -> new CustomException(404, "Produto não encontrado", "ID: " + i));
             assistances.add(assistance);
         });
 
@@ -58,8 +63,8 @@ public class OrderServiceImpl  implements OrderService {
 
     @Override
     public List<Order> listOrdersByOperator(Long operatorId) {
-        if(operatorId == null || operatorId < 0) {
-            throw new IllegalArgumentException("O id do operador [" + operatorId + "] não é válido");
+        if(operatorId == null || operatorId < 1) {
+            throw new CustomException(400, "Argumento Inválido", "O id do operador [" + operatorId + "] não é válido");
         }
         return repository.findAllOrderByOperatorId(operatorId);
     }

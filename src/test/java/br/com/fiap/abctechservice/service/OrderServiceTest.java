@@ -1,5 +1,6 @@
 package br.com.fiap.abctechservice.service;
 
+import br.com.fiap.abctechservice.handler.exception.CustomException;
 import br.com.fiap.abctechservice.handler.exception.MaxAssistsException;
 import br.com.fiap.abctechservice.handler.exception.MinimumAssistsRequiredException;
 import br.com.fiap.abctechservice.model.Assistance;
@@ -8,24 +9,25 @@ import br.com.fiap.abctechservice.model.OrderLocation;
 import br.com.fiap.abctechservice.repository.AssistanceRepository;
 import br.com.fiap.abctechservice.repository.OrderRepository;
 import br.com.fiap.abctechservice.service.impl.OrderServiceImpl;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class OrderServiceTest {
@@ -78,21 +80,50 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void should_throw_exception_when_operatorId_is_null() {
-        assertThrows(IllegalArgumentException.class, () -> orderService.listOrdersByOperator(null));
+    public void should_throw_exception_when_id_is_null() {
+        assertThrows(CustomException.class, () -> orderService.getOrder(null));
+        verify(orderRepository, times(0)).getById(null);
     }
 
     @Test
-    public void should_throw_exception_when_operatorId_is_negative() {
-        assertThrows(IllegalArgumentException.class, () -> orderService.listOrdersByOperator(-1L));
+    public void should_throw_exception_when_id_is_less_than_one() {
+        assertThrows(CustomException.class, () -> orderService.getOrder(0L));
+        verify(orderRepository, times(0)).getById(0L);
+        assertThrows(CustomException.class, () -> orderService.getOrder(-1L));
+        verify(orderRepository, times(0)).getById(-1L);
+    }
+
+    @Test
+    public void should_get_list_when_id_is_valid() {
+        var id = 1L;
+        var order = new Order(id, 123L, Collections.emptyList(), new OrderLocation(), new OrderLocation());
+        when(orderRepository.getById(id)).thenReturn(order);
+
+        final Order returnedOrder = orderService.getOrder(id);
+
+        assertNotNull(returnedOrder);
+        assertEquals(1L, returnedOrder.getId());
+    }
+
+    @Test
+    public void should_throw_exception_when_operatorId_is_null() {
+        assertThrows(CustomException.class, () -> orderService.listOrdersByOperator(null));
+        verify(orderRepository, times(0)).findAllOrderByOperatorId(null);
+    }
+
+    @Test
+    public void should_throw_exception_when_operatorId_is_less_than_one() {
+        assertThrows(CustomException.class, () -> orderService.listOrdersByOperator(0L));
+        verify(orderRepository, times(0)).findAllOrderByOperatorId(0L);
+        assertThrows(CustomException.class, () -> orderService.listOrdersByOperator(-1L));
+        verify(orderRepository, times(0)).findAllOrderByOperatorId(1L);
     }
 
     @Test
     public void should_get_list_when_operatorId_is_valid() {
         var operatorId = 1L;
-        var order = new Order(1L, operatorId, Collections.emptyList(), new OrderLocation(), new OrderLocation());
-        when(orderRepository.findAllOrderByOperatorId(operatorId))
-            .thenReturn(List.of(order));
+        var order = new Order(123L, operatorId, Collections.emptyList(), new OrderLocation(), new OrderLocation());
+        when(orderRepository.findAllOrderByOperatorId(operatorId)).thenReturn(List.of(order));
 
         final List<Order> orders = orderService.listOrdersByOperator(operatorId);
 
