@@ -17,8 +17,7 @@ import java.util.List;
 @RequestMapping("/assistance")
 public class AssistanceController {
 
-
-private final AssistenceApplication assistenceApplication;
+    private final AssistenceApplication assistenceApplication;
 
     public AssistanceController (@Autowired AssistenceApplication assistenceApplication){
         this.assistenceApplication = assistenceApplication;
@@ -27,6 +26,6 @@ private final AssistenceApplication assistenceApplication;
     @GetMapping()
     public ResponseEntity<List<AssistDto>> getAssists(){
         List<AssistDto> list = this.assistenceApplication.getAssists();
-        return  ResponseEntity.ok(list);
+        return ResponseEntity.ok(list);
     }
 }
