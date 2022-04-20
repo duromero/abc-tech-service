@@ -4,6 +4,7 @@ import br.com.fiap.abctechservice.handler.exception.MaxAssistsException;
 import br.com.fiap.abctechservice.handler.exception.MinimumAssistsRequiredException;
 import br.com.fiap.abctechservice.model.Assistance;
 import br.com.fiap.abctechservice.model.Order;
+import br.com.fiap.abctechservice.model.OrderLocation;
 import br.com.fiap.abctechservice.repository.AssistanceRepository;
 import br.com.fiap.abctechservice.repository.OrderRepository;
 import br.com.fiap.abctechservice.service.impl.OrderServiceImpl;
@@ -17,9 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -51,7 +56,6 @@ public class OrderServiceTest {
 
         orderService.saveOrder(newOrder, generate_mock_assistance(1));
 
-
         verify(orderRepository, times(1)).save(newOrder);
     }
 
@@ -60,8 +64,7 @@ public class OrderServiceTest {
         Order newOrder = new Order();
         newOrder.setOperatorId(1234L);
 
-
-        Assertions.assertThrows(MinimumAssistsRequiredException.class, () -> orderService.saveOrder(newOrder, List.of()));
+        assertThrows(MinimumAssistsRequiredException.class, () -> orderService.saveOrder(newOrder, List.of()));
         verify(orderRepository, times(0)).save(newOrder);
     }
 
@@ -70,8 +73,31 @@ public class OrderServiceTest {
         Order newOrder = new Order();
         newOrder.setOperatorId(1234L);
 
-        Assertions.assertThrows(MaxAssistsException.class, () -> orderService.saveOrder(newOrder, generate_mock_assistance(20)));
+        assertThrows(MaxAssistsException.class, () -> orderService.saveOrder(newOrder, generate_mock_assistance(20)));
         verify(orderRepository, times(0)).save(newOrder);
+    }
+
+    @Test
+    public void should_throw_exception_when_operatorId_is_null() {
+        assertThrows(IllegalArgumentException.class, () -> orderService.listOrdersByOperator(null));
+    }
+
+    @Test
+    public void should_throw_exception_when_operatorId_is_negative() {
+        assertThrows(IllegalArgumentException.class, () -> orderService.listOrdersByOperator(-1L));
+    }
+
+    @Test
+    public void should_get_list_when_operatorId_is_valid() {
+        var operatorId = 1L;
+        var order = new Order(1L, operatorId, Collections.emptyList(), new OrderLocation(), new OrderLocation());
+        when(orderRepository.findAllOrderByOperatorId(operatorId))
+            .thenReturn(List.of(order));
+
+        final List<Order> orders = orderService.listOrdersByOperator(operatorId);
+
+        assertEquals(1, orders.size());
+        assertEquals(1L, orders.get(0).getOperatorId());
     }
 
     private List<Long> generate_mock_assistance(int number) {
