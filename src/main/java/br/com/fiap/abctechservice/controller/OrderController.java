@@ -2,6 +2,7 @@ package br.com.fiap.abctechservice.controller;
 
 import br.com.fiap.abctechservice.application.OrderApplication;
 import br.com.fiap.abctechservice.application.dto.OrderDto;
+import br.com.fiap.abctechservice.application.impl.responseDTO.ResponseOrderDTO;
 import br.com.fiap.abctechservice.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,8 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrder(@PathVariable("id") String id){
-        OrderDto order = this.orderApplication.getOrder(Long.parseLong(id));
+    public ResponseEntity<ResponseOrderDTO> getOrder(@PathVariable("id") String id){
+        ResponseOrderDTO order = this.orderApplication.getOrder(Long.parseLong(id));
         return ResponseEntity.ok(order);
     }
 

@@ -1,13 +1,18 @@
 package br.com.fiap.abctechservice.application.impl;
 
 import br.com.fiap.abctechservice.application.OrderApplication;
+import br.com.fiap.abctechservice.application.dto.AssistDto;
 import br.com.fiap.abctechservice.application.dto.OrderDto;
 import br.com.fiap.abctechservice.application.dto.OrderLocationDto;
+import br.com.fiap.abctechservice.application.impl.responseDTO.ResponseOrderDTO;
 import br.com.fiap.abctechservice.model.Order;
 import br.com.fiap.abctechservice.model.OrderLocation;
 import br.com.fiap.abctechservice.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderApplicationImpl implements OrderApplication {
@@ -29,10 +34,13 @@ public class OrderApplicationImpl implements OrderApplication {
     }
 
     @Override
-    public OrderDto getOrder(Long id) {
+    public ResponseOrderDTO getOrder(Long id) {
         Order order = this.service.getOrder(id);
-        OrderDto orderDto= new OrderDto();
+        ResponseOrderDTO orderDto= new ResponseOrderDTO();
         orderDto.setOperatorId(order.getOperatorId());
+        List<AssistDto> assistDtoList = order.getServices().stream().map(assistance -> new AssistDto(assistance.getId(), assistance.getName(),
+                assistance.getDescription())).collect(Collectors.toList());
+        orderDto.setServices(assistDtoList);
         orderDto.setStart(getOrderLocationDtoFromOrderLocation(order.getStartOrderLocation()));
         orderDto.setEnd(getOrderLocationDtoFromOrderLocation(order.getEndtOrderLocation()));
 

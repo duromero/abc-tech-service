@@ -36,7 +36,10 @@ public class OrderServiceImpl  implements OrderService {
         if(id == null || id < 1) {
             throw new CustomException(400, "Argumento Inválido", "O id da ordem [" + id + "] não é válido");
         }
-       return this.repository.getById(id);
+
+        Order order =this.repository.getById(id) ;
+
+        return order;
     }
 
     @Override

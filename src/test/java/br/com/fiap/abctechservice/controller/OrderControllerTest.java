@@ -4,6 +4,7 @@ import br.com.fiap.abctechservice.application.OrderApplication;
 import br.com.fiap.abctechservice.application.dto.AssistDto;
 import br.com.fiap.abctechservice.application.dto.OrderDto;
 import br.com.fiap.abctechservice.application.dto.OrderLocationDto;
+import br.com.fiap.abctechservice.application.impl.responseDTO.ResponseOrderDTO;
 import br.com.fiap.abctechservice.model.Order;
 import br.com.fiap.abctechservice.model.OrderLocation;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,9 +38,9 @@ class OrderControllerTest {
     @Test
     void should_return_order_and_response_ok() {
         final var id = Long.valueOf(123L);
-        final var order = new OrderDto(123L, Collections.emptyList(), new OrderLocationDto(), new OrderLocationDto());
+        final var order = new ResponseOrderDTO(123L, Collections.emptyList(), new OrderLocationDto(), new OrderLocationDto());
         when(application.getOrder(id)).thenReturn(order);
-        final ResponseEntity<OrderDto> response = controller.getOrder(id.toString());
+        final ResponseEntity<ResponseOrderDTO> response = controller.getOrder(id.toString());
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(order, Objects.requireNonNull(response.getBody()));
     }

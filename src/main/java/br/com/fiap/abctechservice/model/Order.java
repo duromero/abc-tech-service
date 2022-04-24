@@ -23,7 +23,7 @@ public class Order {
     @Column(name = "operator_id", nullable = false)
     private Long operatorId;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Assistance> services;
 
     @OneToOne (cascade = CascadeType.PERSIST)
