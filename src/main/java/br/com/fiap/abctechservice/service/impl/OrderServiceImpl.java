@@ -33,15 +33,19 @@ public class OrderServiceImpl  implements OrderService {
 
     @Override
     public Order getOrder(Long id) {
+        if(id == null || id < 1) {
+            throw new CustomException(400, "Argumento Inválido", "O id da ordem [" + id + "] não é válido");
+        }
        return this.repository.getById(id);
     }
 
     @Override
-    public void saveOrder(Order order, List<Long> arrayAssists)  {
+    public Order saveOrder(Order order, List<Long> arrayAssists)  {
         ArrayList<Assistance> assistances = new ArrayList<>();
 
         arrayAssists.forEach( i ->{
-            Assistance assistance = this.assistanceRepository.findById(i).orElseThrow(() -> new CustomException("Produto não encontrado","ID: " + i.toString()));
+            Assistance assistance = this.assistanceRepository.findById(i)
+                .orElseThrow(() -> new CustomException(404, "Produto não encontrado", "ID: " + i));
             assistances.add(assistance);
         });
 
@@ -53,11 +57,14 @@ public class OrderServiceImpl  implements OrderService {
             throw new MaxAssistsException("","");
         }
 
-        repository.save(order);
+        return repository.save(order);
     }
 
     @Override
     public List<Order> listOrdersByOperator(Long operatorId) {
-        return null;
+        if(operatorId == null || operatorId < 1) {
+            throw new CustomException(400, "Argumento Inválido", "O id do operador [" + operatorId + "] não é válido");
+        }
+        return repository.findAllOrderByOperatorId(operatorId);
     }
 }

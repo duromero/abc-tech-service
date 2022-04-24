@@ -13,6 +13,4 @@ public class AssistDto {
     private Long id;
     private String name;
     private String description;
-
-
 }

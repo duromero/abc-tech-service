@@ -10,7 +10,7 @@ public interface OrderService {
 
     Order getOrder(Long id);
 
-    void saveOrder(Order order, List<Long> arrayAssists) throws Exception;
+    Order saveOrder(Order order, List<Long> arrayAssists) throws Exception;
 
     List<Order> listOrdersByOperator(Long operatorId);
 }

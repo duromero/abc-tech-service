@@ -19,13 +19,13 @@ public class OrderApplicationImpl implements OrderApplication {
     }
 
     @Override
-    public void createOrder(OrderDto orderDto) {
+    public Order createOrder(OrderDto orderDto) {
         Order order = new Order();
         order.setOperatorId(orderDto.getOperatorId());
         order.setStartOrderLocation(getOrderLocationFromOrderLocationDto(orderDto.getStart()));
         order.setEndtOrderLocation(getOrderLocationFromOrderLocationDto(orderDto.getEnd()));
 
-        this.service.saveOrder(order, orderDto.getServices());
+        return service.saveOrder(order, orderDto.getServices());
     }
 
     @Override

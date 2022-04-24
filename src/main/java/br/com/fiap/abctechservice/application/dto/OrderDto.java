@@ -26,5 +26,4 @@ public class OrderDto {
     private OrderLocationDto start;
     private OrderLocationDto end;
 
-
 }
