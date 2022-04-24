@@ -1,8 +1,8 @@
 CREATE TABLE assistances (
-     id BIGINT AUTO_INCREMENT NOT NULL,
-     name VARCHAR(100) NOT NULL,
-     `description` VARCHAR(300) NOT NULL,
-     CONSTRAINT pk_assistances PRIMARY KEY (id)
+                             id BIGINT AUTO_INCREMENT NOT NULL,
+                             name VARCHAR(100) NOT NULL,
+                             `description` VARCHAR(300) NOT NULL,
+                             CONSTRAINT pk_assistances PRIMARY KEY (id)
 );
 
 INSERT INTO assistances (name, description) VALUES ('Troca de aparelho', 'Troca de aparelho decodificador de sinal');
