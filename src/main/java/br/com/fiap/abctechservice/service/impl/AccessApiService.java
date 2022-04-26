@@ -87,9 +87,7 @@ public class AccessApiService {
 
             String ipToken = corpo.get("cer", String.class);
 
-            boolean tokenValido = ipToken.equals(DigestUtils.sha512Hex(ipRequisicao));
-
-            return tokenValido;
+            return ipToken.equals(DigestUtils.sha512Hex(ipRequisicao));
 
         } catch (Exception ex) {
             return false;

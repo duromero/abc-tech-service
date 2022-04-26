@@ -69,4 +69,9 @@ class AccessApiServiceTest {
         assertThrows(ExpiredJwtException.class, () -> service.getIdUserAcesso(Users.EXPIRED_TOKEN));
     }
 
+    @Test
+    public void shouldReturnFalseWhenTokenIsExpired() {
+        final var ip = "127.0.0.1";
+        assertFalse(service.isTokenValido(Users.EXPIRED_TOKEN, ip, ip));
+    }
 }
