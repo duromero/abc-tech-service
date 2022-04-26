@@ -3,6 +3,7 @@ package br.com.fiap.abctechservice.service.impl;
 import br.com.fiap.abctechservice.handler.exception.UserNotFound;
 import br.com.fiap.abctechservice.repository.UserRepository;
 import br.com.fiap.abctechservice.util.Users;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -61,6 +62,11 @@ class AccessApiServiceTest {
         when(repository.findByLogin(login)).thenReturn(Optional.empty());
         assertThrows(UserNotFound.class, () -> service.verificarToken(login));
         verify(repository, times(1)).findByLogin(login);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTokenIsExpired() {
+        assertThrows(ExpiredJwtException.class, () -> service.getIdUserAcesso(Users.EXPIRED_TOKEN));
     }
 
 }

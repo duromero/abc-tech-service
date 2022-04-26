@@ -5,7 +5,6 @@ import br.com.fiap.abctechservice.application.dto.TokenDto;
 import br.com.fiap.abctechservice.application.form.LoginForm;
 import br.com.fiap.abctechservice.handler.exception.UserNotFound;
 import br.com.fiap.abctechservice.service.impl.AccessApiService;
-import br.com.fiap.abctechservice.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +20,7 @@ public class AuthApplicationImp implements AuthApplication {
     private final AccessApiService acessoApiService;
     private final AuthenticationManager authManager;
 
-    public AuthApplicationImp(@Autowired AccessApiService acessoApiService, AuthenticationManager authManager) {
+    public AuthApplicationImp(AccessApiService acessoApiService, AuthenticationManager authManager) {
         this.acessoApiService = acessoApiService;
         this.authManager = authManager;
     }
