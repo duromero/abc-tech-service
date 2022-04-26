@@ -1,8 +1,8 @@
 package br.com.fiap.abctechservice.service.impl;
 
 import br.com.fiap.abctechservice.handler.exception.UserNotFound;
-import br.com.fiap.abctechservice.model.Usuario;
 import br.com.fiap.abctechservice.repository.UserRepository;
+import br.com.fiap.abctechservice.util.Users;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -32,7 +32,7 @@ class ApplicationUserDetailsServiceTest {
     @Test
     public void shouldLoadUserByUsernameWhenUsernameExists() {
         final var username = "username";
-        when(repository.findByLogin(username)).thenReturn(Optional.of(getUsuario()));
+        when(repository.findByLogin(username)).thenReturn(Optional.of(Users.getValidUser()));
         final var userDetails = service.loadUserByUsername(username);
         assertNotNull(userDetails);
         assertEquals(username, userDetails.getUsername());
@@ -46,14 +46,5 @@ class ApplicationUserDetailsServiceTest {
         when(repository.findByLogin(username)).thenReturn(Optional.empty());
         assertThrows(UserNotFound.class, () -> service.loadUserByUsername(username));
         verify(repository, times(1)).findByLogin(username);
-    }
-
-    private Usuario getUsuario() {
-        final var usuario = new Usuario();
-        usuario.setName("Joao da Silva");
-        usuario.setLogin("username");
-        usuario.setPassword("123456");
-        usuario.setActive(true);
-        return usuario;
     }
 }

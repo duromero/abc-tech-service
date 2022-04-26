@@ -22,8 +22,11 @@ import java.util.Optional;
 @Service
 public class AccessApiService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public AccessApiService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public boolean verificarToken(String login) {
         return (this.checarLogin(login));
@@ -32,7 +35,7 @@ public class AccessApiService {
     public Usuario getUserAcesso(Long id) {
         Optional<Usuario> user = this.userRepository.findById(id);
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new UserNotFound(id.toString(), true);
         }
 
