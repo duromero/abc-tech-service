@@ -28,10 +28,6 @@ public class AccessApiService {
         this.userRepository = userRepository;
     }
 
-    public boolean verificarToken(String login) {
-        return (this.checarLogin(login));
-    }
-
     public Usuario getUserAcesso(Long id) {
         Optional<Usuario> user = this.userRepository.findById(id);
 
@@ -44,7 +40,6 @@ public class AccessApiService {
 
     public Long getIdUserAcesso(String token) {
         Claims corpo = this.getCorpoToken(token);
-
         return Long.parseLong(corpo.getSubject());
     }
 
@@ -52,11 +47,15 @@ public class AccessApiService {
         return Jwts.parser().setSigningKey(ConstHelper.KEY).parseClaimsJws(token).getBody();
     }
 
+    public boolean verificarToken(String login) {
+        return this.checarLogin(login);
+    }
+
     private boolean checarLogin(String login) {
 
         Optional<Usuario> user = this.userRepository.findByLogin(login);
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new UserNotFound(login, true);
         }
 

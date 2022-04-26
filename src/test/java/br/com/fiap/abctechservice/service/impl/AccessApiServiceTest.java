@@ -28,7 +28,7 @@ class AccessApiServiceTest {
     }
 
     @Test
-    public void shouldLoadUserByUsernameWhenUsernameExists() {
+    public void shouldLoadUserByUserIdWhenIdExists() {
         final var userId = 1L;
         when(repository.findById(userId)).thenReturn(Optional.of(Users.getValidUser()));
         final var usuario = service.getUserAcesso(userId);
@@ -39,11 +39,28 @@ class AccessApiServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUsernameDoesNotExist() {
+    public void shouldThrowExceptionWhenIdDoesNotExist() {
         final var userId = 1L;
         when(repository.findById(userId)).thenReturn(Optional.empty());
         assertThrows(UserNotFound.class, () -> service.getUserAcesso(userId));
         verify(repository, times(1)).findById(userId);
+    }
+
+    @Test
+    public void shouldReturnTrueWhenLoginExists() {
+        final var login = "login";
+        when(repository.findByLogin(login)).thenReturn(Optional.of(Users.getValidUser()));
+        final var tokenValido = service.verificarToken(login);
+        assertTrue(tokenValido);
+        verify(repository, times(1)).findByLogin(login);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenLoginDoesNotExist() {
+        final var login = "login";
+        when(repository.findByLogin(login)).thenReturn(Optional.empty());
+        assertThrows(UserNotFound.class, () -> service.verificarToken(login));
+        verify(repository, times(1)).findByLogin(login);
     }
 
 }
